@@ -17,7 +17,6 @@ h3{
     margin: 20px;
 }
 .pokemon{
-    background-color: #adadad;
     border-radius: 10px;
     padding: 10px;
 
@@ -26,13 +25,20 @@ h3{
         justify-self: center;
         display: flex;
     }
+}
+
+.pokemon:hover{background-color: rgb(209, 250, 134);}
 
     p{
         text-align: center;
         font-size: 20px;
         font-family: monospace;
         margin-top: 10px;
-        color: #261ac9
+        color: #261ac9;
         
-    }
 }
+.grass{background-color: #b7d6a8}
+.fire{background-color: #caa013}
+.normal{background-color: #4b4b4b}
+.water{background-color: #99c4dd}
+.ice{background-color: #b7d6a8}
