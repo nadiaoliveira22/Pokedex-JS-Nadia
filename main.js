@@ -1,15 +1,17 @@
 const url = "https://pokeapi.co/api/v2/pokemon?limit=50&offset=0"
 const pokemonlist = document.getElementById("lista-pokemon")
 
-function convertPokemonToLi(pokemon){
-    console.log(pokemon.types[0].type.name)
+function convertPokemonToLi({ id, name, types, sprites }) {
+  const tipo = types[0].type.name;
+  const imagem = sprites?.other?.dream_world?.front_default || sprites?.front_default || "";
+  const numero = id;
     return `
-        <li class="pokemon ${pokemon.types[0].type.name}">
-            <p class="nome">${pokemon.name}</p>
-            <img src="${pokemon.sprites.other.dream_world.front_default}" alt="Bulbasaur">
-        </li>
-                
-    `;
+    <li class="pokemon ${tipo}">
+      <span class="numero">#${numero}</span>
+      <img src="${imagem}" alt="${name}">
+      <p class="nome">${name}</p>
+    </li>
+  `;
 }
 
 async function getPokemonDetails(pokemon) {

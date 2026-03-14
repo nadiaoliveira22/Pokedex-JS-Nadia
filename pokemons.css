@@ -17,6 +17,7 @@ h3{
     margin: 20px;
 }
 .pokemon{
+    background-color: #d5d6d8;
     border-radius: 10px;
     padding: 10px;
 
@@ -27,31 +28,19 @@ h3{
     }
 }
 
-.pokemon:hover{background-color: rgb(209, 250, 134);}
+.pokemon:hover{background-color: rgb(182, 236, 238);}
 
     p{
         text-align: center;
         font-size: 20px;
-        font-family: monospace;
+        font-family:Arial, Helvetica, sans-serif;
         margin-top: 10px;
         color: #261ac9;
+    }
         
+
+.pokemon .numero {
+  color: #6b6b6a;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 20px;
 }
-.grass{background-color: #b7d6a8}
-.fire{background-color: #caa013}
-.water{background-color: #99c4dd}
-.ice{background-color: #cfe7eb}
-.electric{background-color: #ebf74a;}
-.psychic{background-color: #f85888;}
-.dragon{background-color: #7038f8;}
-.dark{background-color: #705848;}
-.normal{background-color: #a8a878;}
-.fighting{background-color: #903028;}
-.flying{background-color: #a890f0;}
-.poison{background-color: #a040a0;}
-.ground{background-color: #e0c068;}
-.rock{background-color: #443b06;}
-.bug{background-color: #a8b820}
-.ghost{background-color: #705898;}
-.steel{background-color: #b8b8d0;}
-.fairy{background-color: pink;}
