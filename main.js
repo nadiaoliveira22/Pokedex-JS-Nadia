@@ -12,16 +12,23 @@ function convertPokemonToLi(pokemon){
     `;
 }
 
-async function getPokemonDetails(pokemon){
-    return await fetch(pokemon.url)
-    .then(async(response) => await response.json())
+async function getPokemonDetails(pokemon) {
+    const response = await fetch(pokemon.url)
+    return await response.json()
 }
 
-fetch(url)
-    .then((response) => response.json())
-    .then((jsonresponse) => jsonresponse.results)
-    .then((list) => list.map(getPokemonDetails))
-    .then((details) => Promise.all(details))
-    .then((newList) => pokemonlist.innerHTML = newList.map(convertPokemonToLi).join(""))
-    .catch((error) => console.log(error));
- 
+async function loadPokemons() {
+    try {
+        const response = await fetch(url)
+        const jsonresponse = await response.json()
+        const list = jsonresponse.results
+
+        const details = await Promise.all(list.map(getPokemonDetails))
+
+        pokemonlist.innerHTML = details.map(convertPokemonToLi).join("")
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+loadPokemons()
