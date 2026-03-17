@@ -9,26 +9,20 @@
 </head>
 <body>
     <div class="container">
-            <ul class="lista-pokemon" id="lista-pokemon">
-                <li class="pokemon">
-                    <p class="nome">Bulbasaur</p>
-                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/1.svg" alt="Bulbasaur">
-                </li>
-            
-                
-            </ul>
+        <ul class="lista-pokemon" id="lista-pokemon">
+            <li class="pokemon">
+                <p class="nome">Bulbasaur</p>
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/1.svg" alt="Bulbasaur">
+            </li>
+        </ul>
     </div>
 
-    <div class="search-container">
-  <div class="search-box">
-    <input type="text" id="search-input" placeholder="Procure seu pokemon" autocomplete="off" />
-    <button id="clear-btn">✕</button>
-    <ul id="dropdown"></ul>
-  </div>
-</div>
+    <div id="paginacao">
+        <button id="btnAnterior">Anterior</button>
+        <button id="btnProxima">Próxima</button>
+    </div>
 
-<ul id="lista-pokemon"></ul>
 
-<script src="./main.js"></script>
+    <script src="./main.js"></script>
 </body>
 </html>
