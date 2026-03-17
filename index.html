@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokedex</title>
     <link rel="stylesheet" href="pokemons.css">
+    <link rel="stylesheet" href="search.css">
 </head>
 <body>
     <div class="container">
-        <h3>POKEDEX<h3>
             <ul class="lista-pokemon" id="lista-pokemon">
                 <li class="pokemon">
                     <p class="nome">Bulbasaur</p>
@@ -19,7 +19,16 @@
             </ul>
     </div>
 
-    <script src="./main.js"></script>
+    <div class="search-container">
+  <div class="search-box">
+    <input type="text" id="search-input" placeholder="Procure seu pokemon" autocomplete="off" />
+    <button id="clear-btn">✕</button>
+    <ul id="dropdown"></ul>
+  </div>
+</div>
 
+<ul id="lista-pokemon"></ul>
+
+<script src="./main.js"></script>
 </body>
 </html>
