@@ -35,7 +35,7 @@ header {
 }
 
 .pokemon:hover {
-  background-color: rgb(177, 242, 247);
+  background-color: rgb(188, 245, 248);
   box-shadow: 0 0 8px rgba(104, 104, 104, 0.6);
 }
 

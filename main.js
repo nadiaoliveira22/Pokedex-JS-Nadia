@@ -1,6 +1,6 @@
 const API_URL = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
 const listaPokemon = document.getElementById("lista-pokemon");
-const itensPorPagina = 20;
+const itensPorPagina = 24;
 
 let paginaAtual = 1;
 let todosPokemons = [];
