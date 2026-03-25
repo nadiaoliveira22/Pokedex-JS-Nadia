@@ -4,7 +4,7 @@ async function fetchPokemons() {
   const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
   const data = await response.json();
   allPokemons = data.results;
-  console.log("Pokémons carregados:", allPokemons); // deve mostrar os 151
+  console.log("Pokémons carregados:", allPokemons);
 }
 fetchPokemons();
 
@@ -20,7 +20,7 @@ function showSuggestions(searchValue) {
     )
     .slice(0, 5);
 
-  console.log("Sugestões:", suggestions); // debug
+  console.log("Sugestões:", suggestions);
 
   suggestions.forEach(pokemon => {
     const li = document.createElement("li");
@@ -28,7 +28,7 @@ function showSuggestions(searchValue) {
     li.addEventListener("click", () => {
       document.getElementById("search-bar").value = pokemon.name;
       list.innerHTML = "";
-      onSearchedTextEntered(pokemon.name); // sua função de busca
+      onSearchedTextEntered(pokemon.name);
     });
     list.appendChild(li);
   });
