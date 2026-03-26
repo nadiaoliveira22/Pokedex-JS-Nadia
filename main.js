@@ -5,16 +5,24 @@ const itensPorPagina = 24;
 let paginaAtual = 1;
 let todosPokemons = [];
 
-function criarItemPokemon({ id, name, types, sprites }) {
-  const tipo = types[0].type.name;
-  const imagem = sprites?.other?.dream_world?.front_default || sprites?.front_default || "";
-  return `
-    <li class="pokemon ${tipo}">
-      <span class="numero">#${id}</span>
-      <img src="${imagem}" alt="${name}">
-      <p class="nome">${name}</p>
-    </li>
+function createPokemonCard(pokemon) {
+  const imagem = pokemon.sprites.other?.dream_world?.front_default 
+              || pokemon.sprites.other?.["official-artwork"]?.front_default 
+              || pokemon.sprites.front_default;
+
+  const pokemonCard = document.createElement("div");
+  pokemonCard.classList.add("pokemon");
+
+  pokemonCard.innerHTML = `
+    <span class="numero">#${pokemon.id}</span>
+    <img src="${imagem}" alt="${pokemon.name}">
+    <h3>${pokemon.name}</h3>
   `;
+
+  pokemonCard.addEventListener("click", () => {
+    abrirDetalhes(pokemon.name);});
+
+  listaPokemon.appendChild(pokemonCard);
 }
 
 async function buscarDetalhes(pokemon) {
@@ -27,7 +35,9 @@ function mostrarPokemons() {
   const fim = inicio + itensPorPagina;
   const pagina = todosPokemons.slice(inicio, fim);
 
-  listaPokemon.innerHTML = pagina.map(criarItemPokemon).join("");
+  listaPokemon.innerHTML = ""; 
+  pagina.forEach(createPokemonCard);
+
   atualizarPaginacao();
 }
 
@@ -83,6 +93,7 @@ function adicionarEventos(totalPaginas) {
     });
   });
 }
+
 
 async function iniciar() {
   const resposta = await fetch(API_URL);
