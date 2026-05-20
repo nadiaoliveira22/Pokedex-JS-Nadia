@@ -4,6 +4,13 @@ Estudo para o primeiro uso de API. Com HTML, CSS e JavaScript em uma Pokedex.
 Este é meu primeiro projeto front-end completo.
 Como designer gráfica por fomração e estar buscando a migração de carreira, me diverti muito fazendo esse projeto colocando esses meus dois lados a tona.
 
+#Tecnologias usadas
+
+- **JavaScript** (Vanilla JS, sem frameworks)
+- **HTML5** & **CSS3**
+- **PokeAPI** (API pública de Pokémon)
+- **Fetch API** para consumir a API
+
 # Features
 - Busca por Pokémon: permite pesquisar pelo nome na Pokédex.
 - Exibição de dados: mostra imagem oficial, nome, número, tipos e estatísticas básicas.
