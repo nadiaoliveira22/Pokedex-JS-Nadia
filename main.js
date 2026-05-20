@@ -1,9 +1,27 @@
-const API_URL = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
+const API_URL = "https://pokeapi.co/api/v2/pokemon?limit=24";
 const listaPokemon = document.getElementById("lista-pokemon");
 const itensPorPagina = 24;
 
 let paginaAtual = 1;
 let todosPokemons = [];
+let carregando = false;
+
+function mostrarLoading(mostrar) {
+  carregando = mostrar;
+  let loadingDiv = document.getElementById("loading");
+  if (mostrar && !loadingDiv) {
+    loadingDiv = document.createElement("div");
+    loadingDiv.id = "loading";
+    loadingDiv.innerHTML = `<div class="loading-spinner">
+      <div class="pokeball"></div>
+      <p>Carregando Pokémon...</p>
+    </div>`;
+    document.querySelector(".container").appendChild(loadingDiv);
+  }
+  if (loadingDiv) {
+    loadingDiv.style.display = mostrar ? "flex" : "none";
+  }
+}
 
 function createPokemonCard(pokemon) {
   const imagem = pokemon.sprites.other?.dream_world?.front_default 
@@ -12,16 +30,12 @@ function createPokemonCard(pokemon) {
 
   const pokemonCard = document.createElement("div");
   pokemonCard.classList.add("pokemon");
-
   pokemonCard.innerHTML = `
     <span class="numero">#${pokemon.id}</span>
     <img src="${imagem}" alt="${pokemon.name}">
     <h3>${pokemon.name}</h3>
   `;
-
-  pokemonCard.addEventListener("click", () => {
-    abrirDetalhes(pokemon.name);});
-
+  pokemonCard.addEventListener("click", () => abrirDetalhes(pokemon.name));
   listaPokemon.appendChild(pokemonCard);
 }
 
@@ -34,72 +48,99 @@ function mostrarPokemons() {
   const inicio = (paginaAtual - 1) * itensPorPagina;
   const fim = inicio + itensPorPagina;
   const pagina = todosPokemons.slice(inicio, fim);
-
   listaPokemon.innerHTML = ""; 
   pagina.forEach(createPokemonCard);
-
   atualizarPaginacao();
 }
 
 function atualizarPaginacao() {
   const totalPaginas = Math.ceil(todosPokemons.length / itensPorPagina);
   const div = document.getElementById("paginacao");
+  
+  div.innerHTML = "";
 
-  let html = `<button id="btnAnterior" ${paginaAtual === 1 ? "disabled" : ""}>Anterior</button>`;
-
-  html += criarBotaoPagina(1, paginaAtual === 1);
-
-  if (paginaAtual > 3) html += `...`;
-
-  const inicio = Math.max(2, paginaAtual - 1);
-  const fim = Math.min(totalPaginas - 1, paginaAtual + 1);
-  for (let i = inicio; i <= fim; i++) {
-    html += criarBotaoPagina(i, i === paginaAtual);
-  }
-
-  if (paginaAtual < totalPaginas - 2) html += `...`;
-
-  if (totalPaginas > 1) html += criarBotaoPagina(totalPaginas, paginaAtual === totalPaginas);
-
-  html += `<button id="btnProxima" ${paginaAtual === totalPaginas ? "disabled" : ""}>Próxima</button>`;
-
-  div.innerHTML = html;
-  adicionarEventos(totalPaginas);
-}
-
-function criarBotaoPagina(numero, ativo) {
-  return `<button class="page-btn ${ativo ? "active" : ""}" data-page="${numero}">${numero}</button>`;
-}
-
-function adicionarEventos(totalPaginas) {
-  document.getElementById("btnAnterior")?.addEventListener("click", () => {
+  const btnAnterior = document.createElement("button");
+  btnAnterior.id = "btnAnterior";
+  btnAnterior.textContent = "Anterior";
+  if (paginaAtual === 1) btnAnterior.disabled = true;
+  btnAnterior.addEventListener("click", () => {
     if (paginaAtual > 1) {
       paginaAtual--;
       mostrarPokemons();
     }
   });
 
-  document.getElementById("btnProxima")?.addEventListener("click", () => {
+  const btnProxima = document.createElement("button");
+  btnProxima.id = "btnProxima";
+  btnProxima.textContent = "Próxima";
+  if (paginaAtual >= totalPaginas) btnProxima.disabled = true;
+  btnProxima.addEventListener("click", () => {
     if (paginaAtual < totalPaginas) {
       paginaAtual++;
       mostrarPokemons();
     }
   });
 
-  document.querySelectorAll(".page-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      paginaAtual = parseInt(btn.dataset.page);
-      mostrarPokemons();
-    });
-  });
+  div.appendChild(btnAnterior);
+  
+  const btn1 = document.createElement("button");
+  btn1.className = `page-btn ${paginaAtual === 1 ? "active" : ""}`;
+  btn1.textContent = "1";
+  btn1.addEventListener("click", () => { paginaAtual = 1; mostrarPokemons(); });
+  div.appendChild(btn1);
+
+  if (paginaAtual > 3) {
+    const ellipsis1 = document.createElement("span");
+    ellipsis1.className = "ellipsis";
+    ellipsis1.textContent = "...";
+    div.appendChild(ellipsis1);
+  }
+
+  const inicio = Math.max(2, paginaAtual - 1);
+  const fim = Math.min(totalPaginas - 1, paginaAtual + 1);
+  for (let i = inicio; i <= fim; i++) {
+    const btn = document.createElement("button");
+    btn.className = `page-btn ${i === paginaAtual ? "active" : ""}`;
+    btn.textContent = i;
+    btn.addEventListener("click", () => { paginaAtual = i; mostrarPokemons(); });
+    div.appendChild(btn);
+  }
+
+  if (paginaAtual < totalPaginas - 2) {
+    const ellipsis2 = document.createElement("span");
+    ellipsis2.className = "ellipsis";
+    ellipsis2.textContent = "...";
+    div.appendChild(ellipsis2);
+  }
+
+  if (totalPaginas > 1) {
+    const btnTotal = document.createElement("button");
+    btnTotal.className = `page-btn ${paginaAtual === totalPaginas ? "active" : ""}`;
+    btnTotal.textContent = totalPaginas;
+    btnTotal.addEventListener("click", () => { paginaAtual = totalPaginas; mostrarPokemons(); });
+    div.appendChild(btnTotal);
+  }
+
+  div.appendChild(btnProxima);
 }
 
+async function carregarPrimeiraPagina() {
+  mostrarLoading(true);
+  try {
+    const resposta = await fetch(API_URL);
+    const dados = await resposta.json();
+    todosPokemons = await Promise.all(dados.results.map(buscarDetalhes));
+    mostrarPokemons();
+  } catch (erro) {
+    console.error("Erro ao carregar:", erro);
+    listaPokemon.innerHTML = "<p>Erro ao carregar Pokémon. Tente novamente.</p>";
+  } finally {
+    mostrarLoading(false);
+  }
+}
 
-async function iniciar() {
-  const resposta = await fetch(API_URL);
-  const dados = await resposta.json();
-  todosPokemons = await Promise.all(dados.results.map(buscarDetalhes));
-  mostrarPokemons();
+function iniciar() {
+  carregarPrimeiraPagina();
 }
 
 iniciar();
