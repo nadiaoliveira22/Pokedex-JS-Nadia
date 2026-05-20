@@ -1,13 +1,11 @@
-const API_URL = "https://pokeapi.co/api/v2/pokemon?limit=24";
+const API_URL = "https://pokeapi.co/api/v2/pokemon?limit=151";
 const listaPokemon = document.getElementById("lista-pokemon");
 const itensPorPagina = 24;
 
 let paginaAtual = 1;
 let todosPokemons = [];
-let carregando = false;
 
 function mostrarLoading(mostrar) {
-  carregando = mostrar;
   let loadingDiv = document.getElementById("loading");
   if (mostrar && !loadingDiv) {
     loadingDiv = document.createElement("div");
@@ -16,7 +14,7 @@ function mostrarLoading(mostrar) {
       <div class="pokeball"></div>
       <p>Carregando Pokémon...</p>
     </div>`;
-    document.querySelector(".container").appendChild(loadingDiv);
+    document.body.appendChild(loadingDiv);
   }
   if (loadingDiv) {
     loadingDiv.style.display = mostrar ? "flex" : "none";
@@ -35,7 +33,11 @@ function createPokemonCard(pokemon) {
     <img src="${imagem}" alt="${pokemon.name}">
     <h3>${pokemon.name}</h3>
   `;
-  pokemonCard.addEventListener("click", () => abrirDetalhes(pokemon.name));
+  pokemonCard.addEventListener("click", () => {
+    if (typeof abrirDetalhes === "function") {
+      abrirDetalhes(pokemon.name);
+    }
+  });
   listaPokemon.appendChild(pokemonCard);
 }
 
@@ -48,8 +50,10 @@ function mostrarPokemons() {
   const inicio = (paginaAtual - 1) * itensPorPagina;
   const fim = inicio + itensPorPagina;
   const pagina = todosPokemons.slice(inicio, fim);
+  
   listaPokemon.innerHTML = ""; 
   pagina.forEach(createPokemonCard);
+  
   atualizarPaginacao();
 }
 
@@ -60,9 +64,8 @@ function atualizarPaginacao() {
   div.innerHTML = "";
 
   const btnAnterior = document.createElement("button");
-  btnAnterior.id = "btnAnterior";
   btnAnterior.textContent = "Anterior";
-  if (paginaAtual === 1) btnAnterior.disabled = true;
+  btnAnterior.disabled = paginaAtual === 1;
   btnAnterior.addEventListener("click", () => {
     if (paginaAtual > 1) {
       paginaAtual--;
@@ -71,9 +74,8 @@ function atualizarPaginacao() {
   });
 
   const btnProxima = document.createElement("button");
-  btnProxima.id = "btnProxima";
   btnProxima.textContent = "Próxima";
-  if (paginaAtual >= totalPaginas) btnProxima.disabled = true;
+  btnProxima.disabled = paginaAtual >= totalPaginas;
   btnProxima.addEventListener("click", () => {
     if (paginaAtual < totalPaginas) {
       paginaAtual++;
@@ -89,11 +91,10 @@ function atualizarPaginacao() {
   btn1.addEventListener("click", () => { paginaAtual = 1; mostrarPokemons(); });
   div.appendChild(btn1);
 
-  if (paginaAtual > 3) {
-    const ellipsis1 = document.createElement("span");
-    ellipsis1.className = "ellipsis";
-    ellipsis1.textContent = "...";
-    div.appendChild(ellipsis1);
+  if (paginaAtual > 3 && totalPaginas > 4) {
+    const ellipsis = document.createElement("span");
+    ellipsis.textContent = "...";
+    div.appendChild(ellipsis);
   }
 
   const inicio = Math.max(2, paginaAtual - 1);
@@ -106,11 +107,10 @@ function atualizarPaginacao() {
     div.appendChild(btn);
   }
 
-  if (paginaAtual < totalPaginas - 2) {
-    const ellipsis2 = document.createElement("span");
-    ellipsis2.className = "ellipsis";
-    ellipsis2.textContent = "...";
-    div.appendChild(ellipsis2);
+  if (paginaAtual < totalPaginas - 2 && totalPaginas > 4) {
+    const ellipsis = document.createElement("span");
+    ellipsis.textContent = "...";
+    div.appendChild(ellipsis);
   }
 
   if (totalPaginas > 1) {
@@ -124,7 +124,7 @@ function atualizarPaginacao() {
   div.appendChild(btnProxima);
 }
 
-async function carregarPrimeiraPagina() {
+async function carregarPokemons() {
   mostrarLoading(true);
   try {
     const resposta = await fetch(API_URL);
@@ -139,8 +139,4 @@ async function carregarPrimeiraPagina() {
   }
 }
 
-function iniciar() {
-  carregarPrimeiraPagina();
-}
-
-iniciar();
+carregarPokemons();
